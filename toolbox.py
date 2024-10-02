@@ -21,7 +21,7 @@ def interactive():
             print('cmd       Runs the provided command line command')
             print('run       Runs the provided module and its provided arguments')
             print('list      Lists available modules')
-            print('import    Imports defined module')
+            print('import    Imports defined module [Ex. import example.py]')
             print('key       Adds a key for a module')
             print('clear     Clears the command line')
             print('cd        Change current directory')
@@ -142,6 +142,9 @@ def interactive():
         elif cmd[0] == 'key':
             if not cmd[1]:
                 print('[ ! ] An action is required')
+                print('key add')
+                print('key delete')
+                print('key list')
                 continue
             elif cmd[1] == 'add':  
                 module = input('Module Name [Required]: ')
@@ -165,9 +168,9 @@ def interactive():
                     print('[ ! ] Key addition failed')
                     pass
             elif cmd[1] == 'delete':
-                module = input('Key Name [Required]: ')
+                module = input('Module Name [Required]: ')
                 if not module:
-                    print('[ ! ] Key Name is required')
+                    print('[ ! ] Module Name is required')
                     continue
                 else:
                     pass
@@ -214,7 +217,7 @@ def interactive_logged():
             print('cmd       Runs the provided command line command')
             print('run       Runs the provided module and its provided arguments')
             print('list      Lists available modules')
-            print('import    Imports defined module')
+            print('import    Imports defined module [Ex. import example.py]')
             print('clear     Clears the command line')
             print('cd        Change current directory')
             print('ls        List current directory contents')
@@ -334,6 +337,9 @@ def interactive_logged():
         elif cmd[0] == 'key':
             if not cmd[1]:
                 print('[ ! ] An action is required')
+                print('key add')
+                print('key delete')
+                print('key list')
                 continue
             elif cmd[1] == 'add':  
                 module = input('Module Name [Required]: ')
