@@ -22,6 +22,7 @@ def interactive():
             print('run       Runs the provided module and its provided arguments')
             print('list      Lists available modules')
             print('import    Imports defined module')
+            print('key       Adds a key for a module')
             print('clear     Clears the command line')
             print('cd        Change current directory')
             print('ls        List current directory contents')
@@ -124,14 +125,71 @@ def interactive():
                 cur = conn.cursor()
                 module = str(cmd[1].split('.')[0])
                 details = importlib.import_module(str('modules.' + module)).details()
-                cur.execute('INSERT INTO modules(name, category, description, path) VALUES(?,?,?,?);', (details['name'], details['category'], details['description'], details['path']))
+                cur.execute('INSERT INTO modules(name, category, description, path, key) VALUES(?,?,?,?,?);', (details['name'], details['category'], details['description'], details['path'], details['key']))
                 conn.commit()
                 cur.close()
                 conn.close()
                 print('[ + ] Module import successful')
+                if details['key'] == True:
+                    print('This module requires a key')
+                else:
+                    pass
             except:
                 print('[ ! ] Import Failed')
                 pass
+        elif cmd[0] == 'key':
+            if not cmd[1]:
+                print('[ ! ] An action is required')
+                continue
+            elif cmd[1] == 'add':  
+                module = input('Module Name [Required]: ')
+                if not module:
+                    print('[ ! ] Module name is required')
+                    continue
+                user = input('User Name [Optional]: ')
+                key = input('Key Value [Required]: ')
+                if not key:
+                    print('[ ! ] Key value is required')
+                    continue
+                try:
+                    conn = sqlite3.connect(r'%s/.toolbox/toolbox.db' % (os.path.expanduser('~')))
+                    cur = conn.cursor()
+                    cur.execute('INSERT INTO keys(module, user, key) VALUES(?,?,?);', (module, user, key))
+                    conn.commit()
+                    cur.close()
+                    conn.close()
+                    print('[ + ] Key added successfully')
+                except:
+                    print('[ ! ] Key addition failed')
+                    pass
+            elif cmd[1] == 'delete':
+                module = input('Key Name [Required]: ')
+                if not module:
+                    print('[ ! ] Key Name is required')
+                    continue
+                else:
+                    pass
+                try:
+                    conn = sqlite3.connect(r'%s/.toolbox/toolbox.db' % (os.path.expanduser('~')))
+                    cur = conn.cursor()
+                    cur.execute('DELETE FROM keys WHERE module=?;', (module,))
+                    conn.commit()
+                    cur.close()
+                    conn.close()
+                    print('[ + ] Key deleted successfully')
+                except:
+                    print('[ ! ] Key deletion failed')
+                    pass
+            elif cmd[1] == 'list':
+                conn = sqlite3.connect(r'%s/.toolbox/toolbox.db' % (os.path.expanduser('~')))
+                cur = conn.cursor()
+                cur.execute('SELECT * FROM keys;')
+                keys = cur.fetchall()
+                print('<=====[ KEYS ]=====>\n')
+                for row in keys:
+                    print(str(row[1]))
+                cur.close()
+                conn.close()
         elif cmd[0] == 'clear':
             subprocess.call('clear')
         elif cmd[0] == 'cd':
@@ -261,7 +319,7 @@ def interactive_logged():
                 cur = conn.cursor()
                 module = str(cmd[1].split('.')[0])
                 details = importlib.import_module(str('modules.' + module)).details()
-                cur.execute('INSERT INTO modules(name, category, description, path) VALUES(?,?,?,?);', (details['name'], details['category'], details['description'], details['path']))
+                cur.execute('INSERT INTO modules(name, category, description, path) VALUES(?,?,?,?,?);', (details['name'], details['category'], details['description'], details['path'], details['key']))
                 conn.commit()
                 cur.close()
                 conn.close()
@@ -271,6 +329,63 @@ def interactive_logged():
                 print('[ ! ] Import Failed')
                 logging.info('import: %s - Failed', ' '.join(cmd))
                 pass
+        elif cmd[0] == 'key':
+            if not cmd[1]:
+                print('[ ! ] An action is required')
+                continue
+            elif cmd[1] == 'add':  
+                module = input('Module Name [Required]: ')
+                if not module:
+                    print('[ ! ] Module name is required')
+                    continue
+                user = input('User Name [Optional]: ')
+                key = input('Key Value [Required]: ')
+                if not key:
+                    print('[ ! ] Key value is required')
+                    continue
+                try:
+                    conn = sqlite3.connect(r'%s/.toolbox/toolbox.db' % (os.path.expanduser('~')))
+                    cur = conn.cursor()
+                    cur.execute('INSERT INTO keys(module, user, key) VALUES(?,?,?);', (module, user, key))
+                    conn.commit()
+                    cur.close()
+                    conn.close()
+                    print('[ + ] Key added successfully')
+                    logging.info('key: %s - Success', ' '.join(cmd))
+                except:
+                    print('[ ! ] Key addition failed')
+                    logging.info('key: %s - Failed', ' '.join(cmd))
+                    pass
+            elif cmd[1] == 'delete':
+                module = input('Key Name [Required]: ')
+                if not module:
+                    print('[ ! ] Key Name is required')
+                    continue
+                else:
+                    pass
+                try:
+                    conn = sqlite3.connect(r'%s/.toolbox/toolbox.db' % (os.path.expanduser('~')))
+                    cur = conn.cursor()
+                    cur.execute('DELETE FROM keys WHERE module=?;', (module,))
+                    conn.commit()
+                    cur.close()
+                    conn.close()
+                    print('[ + ] Key deleted successfully')
+                    logging.info('key: %s - Success', ' '.join(cmd))
+                except:
+                    print('[ ! ] Key deletion failed')
+                    logging.info('key: %s - Failed', ' '.join(cmd))
+                    pass
+            elif cmd[1] == 'list':
+                conn = sqlite3.connect(r'%s/.toolbox/toolbox.db' % (os.path.expanduser('~')))
+                cur = conn.cursor()
+                cur.execute('SELECT * FROM keys;')
+                keys = cur.fetchall()
+                print('<=====[ KEYS ]=====>\n')
+                for row in keys:
+                    print(str(row[1]))
+                cur.close()
+                conn.close()
         elif cmd[0] == 'clear':
             subprocess.call('clear')
         elif cmd[0] == 'cd':
