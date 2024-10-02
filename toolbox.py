@@ -142,6 +142,9 @@ def interactive():
         elif cmd[0] == 'key':
             if not cmd[1]:
                 print('[ ! ] An action is required')
+                print('key add')
+                print('key delete')
+                print('key list')
                 continue
             elif cmd[1] == 'add':  
                 module = input('Module Name [Required]: ')
@@ -165,9 +168,9 @@ def interactive():
                     print('[ ! ] Key addition failed')
                     pass
             elif cmd[1] == 'delete':
-                module = input('Key Name [Required]: ')
+                module = input('Module Name [Required]: ')
                 if not module:
-                    print('[ ! ] Key Name is required')
+                    print('[ ! ] Module Name is required')
                     continue
                 else:
                     pass
@@ -334,6 +337,9 @@ def interactive_logged():
         elif cmd[0] == 'key':
             if not cmd[1]:
                 print('[ ! ] An action is required')
+                print('key add')
+                print('key delete')
+                print('key list')
                 continue
             elif cmd[1] == 'add':  
                 module = input('Module Name [Required]: ')
