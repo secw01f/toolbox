@@ -116,6 +116,8 @@ def interactive():
                 print('\n\n<=====[ MISCELLANEOUS ]=====>\n')
                 for row in misc:
                     print(str(row[1] + '     ' + row[3]))
+            cur.close()
+            conn.close()
             
         elif cmd[0] == 'import':
             dir = os.path.dirname(os.path.realpath(__file__))
@@ -200,7 +202,7 @@ def interactive():
             sys.exit()
 
 def interactive_logged():
-    logging.basicConfig(filename=str('%s/.toolbox/toolbox.log' % (os.path.expanduser('~'))), filemode="w", format="%(asctime)s : %(message)s", datefmt="%m/%d/%Y %I:%M:%S %p", level=logging.INFO)
+    logging.basicConfig(filename=str('%s/.toolbox/toolbox.log' % (os.path.expanduser('~'))), format="%(asctime)s : %(message)s", datefmt="%m/%d/%Y %I:%M:%S %p", level=logging.INFO)
     logging.info('Session Started')
     while True:
         prompt = input(('(%s)>>> ' % (os.getlogin())))
