@@ -41,48 +41,86 @@ def interactive():
             except:
                 pass
         elif cmd[0] == 'list':
-            conn = sqlite3.connect(r'%s/.toolbox/modules.db' % (os.path.expanduser('~')))
+            conn = sqlite3.connect(r'%s/.toolbox/toolbox.db' % (os.path.expanduser('~')))
             cur = conn.cursor()
-            cur.execute('SELECT * FROM modules WHERE category="recon";')
-            recon = cur.fetchall()
+            cur.execute('SELECT * FROM config;')
+            config = str(cur.fetchone()[0])
+            if config == 'offensive':
+                cur.execute('SELECT * FROM modules WHERE category="recon";')
+                recon = cur.fetchall()
 
-            print('<=====[ RECONNAISSANCE ]=====>\n')
-            for row in recon:
-                print(str(row[1] + '     ' + row[3]))
+                print('<=====[ RECONNAISSANCE ]=====>\n')
+                for row in recon:
+                    print(str(row[1] + '     ' + row[3]))
 
-            cur.execute('SELECT * FROM modules WHERE category="listener";')
-            listener = cur.fetchall()
+                cur.execute('SELECT * FROM modules WHERE category="listener";')
+                listener = cur.fetchall()
 
-            print('\n\n<=====[ LISTENERS ]=====>\n')
-            for row in listener:
-                print(str(row[1] + '     ' + row[3]))
+                print('\n\n<=====[ LISTENERS ]=====>\n')
+                for row in listener:
+                    print(str(row[1] + '     ' + row[3]))
 
-            cur.execute('SELECT * FROM modules WHERE category="exploit";')
-            exploit = cur.fetchall()
+                cur.execute('SELECT * FROM modules WHERE category="exploit";')
+                exploit = cur.fetchall()
 
-            print('\n\n<=====[ EXPLOITS ]=====>\n')
-            for row in exploit:
-                print(str(row[1] + '     ' + row[3]))
+                print('\n\n<=====[ EXPLOITS ]=====>\n')
+                for row in exploit:
+                    print(str(row[1] + '     ' + row[3]))
             
-            cur.execute('SELECT * FROM modules WHERE category="post_exploit";')
-            post_exploit = cur.fetchall()
+                cur.execute('SELECT * FROM modules WHERE category="post_exploit";')
+                post_exploit = cur.fetchall()
 
-            print('\n\n<=====[ POST EXPLOITATION ]=====>\n')
-            for row in post_exploit:
-                print(str(row[1] + '     ' + row[3]))
+                print('\n\n<=====[ POST EXPLOITATION ]=====>\n')
+                for row in post_exploit:
+                    print(str(row[1] + '     ' + row[3]))
             
-            cur.execute('SELECT * FROM modules WHERE category="misc";')
-            misc = cur.fetchall()
+                cur.execute('SELECT * FROM modules WHERE category="misc";')
+                misc = cur.fetchall()
 
-            print('\n\n<=====[ MISCELLANEOUS ]=====>\n')
-            for row in misc:
-                print(str(row[1] + '     ' + row[3]))
+                print('\n\n<=====[ MISCELLANEOUS ]=====>\n')
+                for row in misc:
+                    print(str(row[1] + '     ' + row[3]))
+            elif config == 'defensive':
+                cur.execute('SELECT * FROM modules WHERE category="sec_engineering";')
+                sec_eng = cur.fetchall()
+
+                print('<=====[ SECURITY ENGINEERING ]=====>\n')
+                for row in sec_eng:
+                    print(str(row[1] + '     ' + row[3]))
+
+                cur.execute('SELECT * FROM modules WHERE category="app_security";')
+                app_sec = cur.fetchall()
+
+                print('\n\n<=====[ APPLICATION SECURITY ]=====>\n')
+                for row in app_sec:
+                    print(str(row[1] + '     ' + row[3]))
+
+                cur.execute('SELECT * FROM modules WHERE category="incident_response";')
+                incident_response = cur.fetchall()
+
+                print('\n\n<=====[ INCIDENT RESPONSE ]=====>\n')
+                for row in incident_response:
+                    print(str(row[1] + '     ' + row[3]))
+            
+                cur.execute('SELECT * FROM modules WHERE category="vuln_management";')
+                vuln_management = cur.fetchall()
+
+                print('\n\n<=====[ VULNERABILITY MANAGEMENT ]=====>\n')
+                for row in vuln_management:
+                    print(str(row[1] + '     ' + row[3]))
+            
+                cur.execute('SELECT * FROM modules WHERE category="misc";')
+                misc = cur.fetchall()
+
+                print('\n\n<=====[ MISCELLANEOUS ]=====>\n')
+                for row in misc:
+                    print(str(row[1] + '     ' + row[3]))
             
         elif cmd[0] == 'import':
             dir = os.path.dirname(os.path.realpath(__file__))
             try:
                 shutil.copy(cmd[1], str(dir + '/modules'))
-                conn = sqlite3.connect(r'%s/.toolbox/modules.db' % (os.path.expanduser('~')))
+                conn = sqlite3.connect(r'%s/.toolbox/toolbox.db' % (os.path.expanduser('~')))
                 cur = conn.cursor()
                 module = str(cmd[1].split('.')[0])
                 details = importlib.import_module(str('modules.' + module)).details()
@@ -140,48 +178,86 @@ def interactive_logged():
                 logging.info('run: %s - Failed', ' '.join(cmd))
                 pass
         elif cmd[0] == 'list':
-            conn = sqlite3.connect(r'%s/.toolbox/modules.db' % (os.path.expanduser('~')))
+            conn = sqlite3.connect(r'%s/.toolbox/toolbox.db' % (os.path.expanduser('~')))
             cur = conn.cursor()
-            cur.execute('SELECT * FROM modules WHERE category="recon";')
-            recon = cur.fetchall()
+            cur.execute('SELECT * FROM config;')
+            config = str(cur.fetchone()[0])
+            if config == 'offensive':
+                cur.execute('SELECT * FROM modules WHERE category="recon";')
+                recon = cur.fetchall()
 
-            print('<=====[ RECONNAISSANCE ]=====>\n')
-            for row in recon:
-                print(str(row[1] + '     ' + row[3]))
+                print('<=====[ RECONNAISSANCE ]=====>\n')
+                for row in recon:
+                    print(str(row[1] + '     ' + row[3]))
 
-            cur.execute('SELECT * FROM modules WHERE category="listener";')
-            listener = cur.fetchall()
+                cur.execute('SELECT * FROM modules WHERE category="listener";')
+                listener = cur.fetchall()
 
-            print('\n\n<=====[ LISTENERS ]=====>\n')
-            for row in listener:
-                print(str(row[1] + '     ' + row[3]))
+                print('\n\n<=====[ LISTENERS ]=====>\n')
+                for row in listener:
+                    print(str(row[1] + '     ' + row[3]))
 
-            cur.execute('SELECT * FROM modules WHERE category="exploit";')
-            exploit = cur.fetchall()
+                cur.execute('SELECT * FROM modules WHERE category="exploit";')
+                exploit = cur.fetchall()
 
-            print('\n\n<=====[ EXPLOITS ]=====>\n')
-            for row in exploit:
-                print(str(row[1] + '     ' + row[3]))
+                print('\n\n<=====[ EXPLOITS ]=====>\n')
+                for row in exploit:
+                    print(str(row[1] + '     ' + row[3]))
             
-            cur.execute('SELECT * FROM modules WHERE category="post_exploit";')
-            post_exploit = cur.fetchall()
+                cur.execute('SELECT * FROM modules WHERE category="post_exploit";')
+                post_exploit = cur.fetchall()
 
-            print('\n\n<=====[ POST EXPLOITATION ]=====>\n')
-            for row in post_exploit:
-                print(str(row[1] + '     ' + row[3]))
+                print('\n\n<=====[ POST EXPLOITATION ]=====>\n')
+                for row in post_exploit:
+                    print(str(row[1] + '     ' + row[3]))
             
-            cur.execute('SELECT * FROM modules WHERE category="misc";')
-            misc = cur.fetchall()
+                cur.execute('SELECT * FROM modules WHERE category="misc";')
+                misc = cur.fetchall()
 
-            print('\n\n<=====[ MISCELLANEOUS ]=====>\n')
-            for row in misc:
-                print(str(row[1] + '     ' + row[3]))
+                print('\n\n<=====[ MISCELLANEOUS ]=====>\n')
+                for row in misc:
+                    print(str(row[1] + '     ' + row[3]))
+            elif config == 'defensive':
+                cur.execute('SELECT * FROM modules WHERE category="sec_engineering";')
+                sec_eng = cur.fetchall()
+
+                print('<=====[ SECURITY ENGINEERING ]=====>\n')
+                for row in sec_eng:
+                    print(str(row[1] + '     ' + row[3]))
+
+                cur.execute('SELECT * FROM modules WHERE category="app_security";')
+                app_sec = cur.fetchall()
+
+                print('\n\n<=====[ APPLICATION SECURITY ]=====>\n')
+                for row in app_sec:
+                    print(str(row[1] + '     ' + row[3]))
+
+                cur.execute('SELECT * FROM modules WHERE category="incident_response";')
+                incident_response = cur.fetchall()
+
+                print('\n\n<=====[ INCIDENT RESPONSE ]=====>\n')
+                for row in incident_response:
+                    print(str(row[1] + '     ' + row[3]))
+            
+                cur.execute('SELECT * FROM modules WHERE category="vuln_management";')
+                vuln_management = cur.fetchall()
+
+                print('\n\n<=====[ VULNERABILITY MANAGEMENT ]=====>\n')
+                for row in vuln_management:
+                    print(str(row[1] + '     ' + row[3]))
+            
+                cur.execute('SELECT * FROM modules WHERE category="misc";')
+                misc = cur.fetchall()
+
+                print('\n\n<=====[ MISCELLANEOUS ]=====>\n')
+                for row in misc:
+                    print(str(row[1] + '     ' + row[3]))
             
         elif cmd[0] == 'import':
             dir = os.path.dirname(os.path.realpath(__file__))
             try:
                 shutil.copy(cmd[1], str(dir + '/modules'))
-                conn = sqlite3.connect(r'%s/.toolbox/modules.db' % (os.path.expanduser('~')))
+                conn = sqlite3.connect(r'%s/.toolbox/toolbox.db' % (os.path.expanduser('~')))
                 cur = conn.cursor()
                 module = str(cmd[1].split('.')[0])
                 details = importlib.import_module(str('modules.' + module)).details()
