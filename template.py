@@ -3,7 +3,7 @@ import os
 
 # Update the the values in the key value pairs with the appropriate information for the module
 def details():
-    details = {'name': str(os.path.basename(__file__)).splic('.')[0], 'category': 'misc', 'description': 'This is a template for toolbox modules', 'path': os.path.abspath(__file__)}
+    details = {'name': str(os.path.basename(__file__)).split('.')[0], 'category': 'misc', 'description': 'This is a template for toolbox modules', 'path': os.path.abspath(__file__), 'key': False}
     return(details)
 
 def module(args):
